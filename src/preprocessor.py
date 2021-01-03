@@ -1,5 +1,7 @@
 import re
 
+from src.line import Line
+
 
 class Preprocessor:
     pattern_label_targets = re.compile(r'([\w\d]+):')
@@ -8,6 +10,7 @@ class Preprocessor:
     def __init__(self, input: str):
         self._input = input
         self._processed = ''
+        #self._elisions = []
 
     def get_result(self):
         return self._processed
