@@ -22,7 +22,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -38,7 +38,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -73,7 +73,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -105,7 +105,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -123,7 +123,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -147,7 +147,7 @@ class TestPreProcessor(TestCase):
         uut = Preprocessor(input)
         uut.process_labels()
 
-        actual = uut.get_result()
+        actual = uut.result
 
         self.assertEqual(expected, actual)
 
@@ -184,6 +184,12 @@ class TestPreProcessor(TestCase):
             uut.process_labels()
 
     def test_parse_lines(self):
+        pass
+
+    def test_process_labels_multiple_identical_targets(self):
+        pass
+
+    def test_process_labels_multiple_references_to_same_target(self):
         pass
 
 # TODO: Regex-test error message for references to unknown targets (line number, chevrons, etc.)

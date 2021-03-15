@@ -9,21 +9,36 @@ class Preprocessor:
 
     def __init__(self, input: str):
         self._input = input
-        self._processed = ''
-        #self._elisions = []
+        self._lines = []
 
-    def get_result(self):
+    @property
+    def lines(self):
+        return self._lines
+
+    @property
+    def result(self):
         return self._processed
 
+    def parse_input(self):
+        lines = []
+        input = self._input.splitlines()
+
+        for i, content in enumerate(input):
+            line = Line(i, content)
+            lines.append(line)
+
+        self._lines = lines
+
     def process_labels(self):
-        targets = {}
+        targets = []
         processed = []
-        input = self._input.split('\n')
         line_offset = 0
 
+        # Find references to targets first, then store these in their respective target lines for expansion
+
         # Find all target labels
-        for i, line in enumerate(input):
-            match_target = self.pattern_label_targets.fullmatch(line)
+        for i, line in enumerate(self._lines):
+            match_target = self.pattern_label_targets.fullmatch(line.original_content)
 
             if match_target:
                 target = match_target.group(1)
