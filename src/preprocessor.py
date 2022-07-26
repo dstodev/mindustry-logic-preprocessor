@@ -4,8 +4,8 @@ from src.line import Line
 
 
 class Preprocessor:
-    pattern_label_targets = re.compile(r'([\w\d]+):')
-    pattern_label_references = re.compile(r'\s:([\w\d]+)\s')
+    pattern_label_targets = re.compile(r'\s*([\w\d]+):')
+    pattern_label_references = re.compile(r'\s:([\w\d]+)\b')
 
     def __init__(self, input: str):
         self._input = input
@@ -23,24 +23,27 @@ class Preprocessor:
 
         # Find all target labels
         for i, line in enumerate(input):
+            line = line.strip()
             match_target = self.pattern_label_targets.fullmatch(line)
 
             if match_target:
                 target = match_target.group(1)
-                targets[target] = i + 1 - line_offset
+                targets[target] = i - line_offset
                 line_offset += 1
             else:
-                processed.append((line, i + 1))
+                if not line:
+                    line_offset += 1
+                else:
+                    processed.append((line, i + 1))
 
         # Find and replace all references to targets
         for i, pair in enumerate(processed):
             line = pair[0]
             line_number = pair[1]
             match_reference = self.pattern_label_references.search(line)
-
             if match_reference:
                 x1 = match_reference.start() + 1  # + 1 to skip the leading whitespace
-                x2 = match_reference.end() - 1  # - 1 to skip the trailing whitespace
+                x2 = match_reference.end()
                 ref = match_reference.group(1)
 
                 try:
@@ -56,6 +59,6 @@ class Preprocessor:
                 processed[i] = line[:x1] + target_line + line[x2:]
 
             else:
-                processed[i] = line
+                processed[i] = line.strip()
 
         self._processed = '\n'.join(processed)
