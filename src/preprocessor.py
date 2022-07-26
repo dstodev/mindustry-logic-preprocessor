@@ -4,7 +4,7 @@ from src.line import Line
 
 
 class Preprocessor:
-    pattern_label_targets = re.compile(r'\s*([\w\d]+):')
+    pattern_label_targets = re.compile(r'([\w\d]+):')
     pattern_label_references = re.compile(r'\s:([\w\d]+)\b')
 
     def __init__(self, input: str):

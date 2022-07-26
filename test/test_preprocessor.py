@@ -28,7 +28,7 @@ class TestPreProcessor(TestCase):
 
     def test_process_labels_unreferenced_target(self):
         input = cleandoc('''
-            jump 3 notEqual @unit null
+            jump 2 notEqual @unit null
             ubind @mono
             label1:
             end
@@ -64,9 +64,9 @@ class TestPreProcessor(TestCase):
             end
         ''')
         expected = cleandoc('''
-            jump 3 notEqual @unit null
+            jump 2 notEqual @unit null
             ubind @mono
-            jump 1 notEqual @unit null
+            jump 0 notEqual @unit null
             end
         ''')
 
@@ -93,13 +93,13 @@ class TestPreProcessor(TestCase):
             jump :label3 notEqual @unit null
         ''')
         expected = cleandoc('''
-            jump 2 notEqual @unit null
-            jump 2 notEqual @unit null
+            jump 1 notEqual @unit null
+            jump 1 notEqual @unit null
             ubind @mono
-            jump 7 notEqual @unit null
+            jump 6 notEqual @unit null
             end
-            jump 5 notEqual @unit null
             jump 4 notEqual @unit null
+            jump 3 notEqual @unit null
         ''')
 
         uut = Preprocessor(input)
@@ -136,13 +136,7 @@ class TestPreProcessor(TestCase):
 
             end
         ''')
-        expected = cleandoc('''
-            jump 4 notEqual @unit null
-            ubind @mono
-
-
-            end
-        ''')
+        expected = STANDARD_SIMPLE
 
         uut = Preprocessor(input)
         uut.process_labels()
@@ -185,6 +179,18 @@ class TestPreProcessor(TestCase):
 
     def test_parse_lines(self):
         pass
+
+    def test_complex(self):
+        input = CUSTOM_COMPLEX
+        expected = STANDARD_COMPLEX
+
+        uut = Preprocessor(input)
+        uut.process_labels()
+
+        actual = uut.get_result()
+
+        self.assertEqual(expected, actual)
+
 
 # TODO: Regex-test error message for references to unknown targets (line number, chevrons, etc.)
 # TODO: Consume empty lines but keep track of removed lines for offsetting purposes
